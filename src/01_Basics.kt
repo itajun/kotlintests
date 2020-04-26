@@ -1,5 +1,8 @@
 import pkg1.DataClass1 // 1 class imported
 import pkg1.sayHello // A function defined in the same file as the class. There is no correspondence between the file name and the class(es)/functions in the file
+import java.io.Closeable
+import java.io.FileWriter
+import java.nio.file.Files
 
 /**
  * This is public static void main(String... args)
@@ -90,6 +93,65 @@ fun main() {
         val (folder, file, ext) = matchEntire?.destructured // Cool
         println("fileName: $file")
     }
+
+    // APPLY - Use and return self
+
+    StringBuilder().apply {
+        append("a")
+        append("b")
+    }.toString()
+
+    // USE (alike try-with-resources)
+
+//    FileWriter(Files.createTempFile("xpto", "tmp").toFile()).use {
+//        it.write("something")
+//    }
+
+    /*
+    This will close `Closeable` classes, since Kotlin targets jdk6. For auto-closeable, just add the dependency
+    <dependency>
+    <groupId>org.jetbrains.kotlin</groupId>
+    <artifactId>kotlin-stdlib-jdk8</artifactId>
+    </dependency>
+     */
+
+    class TestCloseable: Closeable {
+        override fun close() {
+            println("I'm closing")
+        }
+    }
+
+    TestCloseable().use {
+        println("Using closeable")
+    }
+
+    // SAFE CALL AND ELVIS
+
+    val strNull: String? = null
+    val strA: String? = "a"
+    println(strNull?.toUpperCase()) // prints null
+    println(strA?.toUpperCase()) // prints A
+    println((strNull?:"b").toUpperCase()) // prints B
+
+    /*
+    Other interesting ones are
+    `as?` casted if instanceof (or `is`) and `null` otherwise
+    `!!` throws NPE if null
+     */
+
+    strNull?.let {  // Called only if non-null
+        print("This will never be printed")
+    }
+
+    /*
+    For Unit Tests, we may need to use `lateinit`, but I won't go into details here
+     */
+
+    /*
+    Kotlin's `Object` is `Any`
+    Kotlin's `void/Void` is `Unit`
+    Kotlin has a `Nothing` type, for functions that never return (i.e. throw exception)
+     */
 }
 
 /**
