@@ -155,6 +155,11 @@ fun main() {
 }
 
 /**
+ * This is possible and really useful for `@Test`s
+ */
+fun `really descriptive name`() = "x"
+
+/**
  * Guess what? This is a simple interface.
  */
 interface SimpleInterface {
