@@ -5,6 +5,8 @@ fun main() {
     // `IAmASingleton()` is not possible
 
     IAmTheParent.thisReturnsOk() // Weird companion object. Check at the end, the method doesn't exist on the parent
+
+    println(IHaveInfix("y") and "x")
 }
 
 class IAmFinal // Classes are final by default, unlike Java
@@ -91,4 +93,8 @@ class IAmTheParent {
     companion object IAmACompanion {
         fun thisReturnsOk() = "Ok"
     }
+}
+
+data class IHaveInfix(val name: String) {
+    infix fun and(x: String) = IHaveInfix("$x $name") // Infix don't need ()
 }
